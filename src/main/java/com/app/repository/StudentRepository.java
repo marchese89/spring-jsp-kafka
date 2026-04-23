@@ -1,6 +1,6 @@
 package com.app.repository;
 
-import com.app.entity.Student;
+import com.app.model.Student;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;

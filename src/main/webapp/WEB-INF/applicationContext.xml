@@ -25,7 +25,7 @@
           class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 
         <property name="dataSource" ref="dataSource"/>
-        <property name="packagesToScan" value="com.app.entity"/>
+        <property name="packagesToScan" value="com.app.model"/>
 
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
