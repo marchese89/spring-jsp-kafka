@@ -30,9 +30,11 @@ target/
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
+/nb-configuration.xml
 
 ### VS Code ###
 .vscode/
 
 ### Mac OS ###
 .DS_Store
+/.idea/.name
