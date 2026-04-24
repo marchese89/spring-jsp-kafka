@@ -1,5 +1,6 @@
 package com.app.config;
 
+import antoniogiovanni.marchese.dto.events.StudentEvent;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -13,6 +14,7 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.kafka.support.serializer.JsonSerializer;
 
 @Configuration
 @EnableKafka
@@ -20,7 +22,7 @@ public class KafkaConfig {
 
     // 🔹 PRODUCER
     @Bean
-    public ProducerFactory<String, String> producerFactory() {
+    public ProducerFactory<String, String> stringProducerFactory() {
         Map<String, Object> config = new HashMap<>();
 
         config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
@@ -31,8 +33,24 @@ public class KafkaConfig {
     }
 
     @Bean
+    public ProducerFactory<String, StudentEvent> studentProducerFactory() {
+        Map<String, Object> config = new HashMap<>();
+
+        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+
+        return new DefaultKafkaProducerFactory<>(config);
+    }
+
+    @Bean(name = "stringKafkaTemplate")
     public KafkaTemplate<String, String> kafkaTemplate() {
-        return new KafkaTemplate<>(producerFactory());
+        return new KafkaTemplate<>(stringProducerFactory());
+    }
+
+    @Bean(name = "studentKafkaTemplate")
+    public KafkaTemplate<String, StudentEvent> studentKafkaTemplate() {
+        return new KafkaTemplate<>(studentProducerFactory());
     }
 
     // 🔹 CONSUMER

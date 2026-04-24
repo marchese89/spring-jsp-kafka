@@ -12,14 +12,12 @@ public class KafkaProducerService {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void send(String topic, String messaggio) {
-//        kafkaTemplate.send(topic, messaggio);
-//        System.out.println("Inviato: " + messaggio);
-        kafkaTemplate.send(topic, messaggio)
+    public void send(String topic, String event) {
+
+        kafkaTemplate.send(topic, event)
                 .addCallback(
                         success -> System.out.println("✔ SEND OK"),
                         error -> System.out.println("❌ SEND FAIL: " + error.getMessage())
                 );
-
     }
 }

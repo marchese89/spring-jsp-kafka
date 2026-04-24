@@ -1,6 +1,7 @@
 package com.app.controller;
 
 import com.app.model.Student;
+import com.app.service.KafkaStudentProducer;
 import com.app.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,17 +14,28 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class StudentController {
 
     @Autowired
-    private StudentService service;
+    private StudentService studentService;
+    @Autowired
+    private KafkaStudentProducer producer;
 
     @GetMapping("/students")
     public String list(Model model) {
-        model.addAttribute("students", service.getAll());
+        model.addAttribute("students", studentService.getAll());
         return "students";
     }
 
     @PostMapping("/students/add")
-    public String add(@RequestParam String name) {
-        service.add(new Student(name));
+    public String addStudent(@RequestParam String name) {
+        Student s = new Student();
+        s.setName(name);
+
+        Student saved = studentService.add(s);
+
+        producer.sendStudentCreated(
+                saved.getId(),
+                saved.getName()
+        );
+
         return "redirect:/students";
     }
 }

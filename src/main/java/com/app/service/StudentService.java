@@ -20,7 +20,8 @@ public class StudentService {
         return repo.findAll();
     }
     @Transactional
-    public void add(Student s) {
+    public Student add(Student s) {
         repo.save(s);
+        return s;
     }
 }
