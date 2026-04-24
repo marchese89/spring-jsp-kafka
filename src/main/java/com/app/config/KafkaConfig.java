@@ -63,6 +63,31 @@ public class KafkaConfig {
         config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 
+        config.put(org.springframework.kafka.support.serializer.JsonDeserializer.TRUSTED_PACKAGES,
+                "antoniogiovanni.marchese.dto.events");
+
+        return new DefaultKafkaConsumerFactory<>(config);
+    }
+
+    @Bean
+    public ConsumerFactory<String, StudentEvent> studentConsumerFactory() {
+
+        Map<String, Object> config = new HashMap<>();
+
+        config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        config.put(ConsumerConfig.GROUP_ID_CONFIG, "my-group");
+
+        config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
+                StringDeserializer.class);
+
+        config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
+                org.springframework.kafka.support.serializer.JsonDeserializer.class);
+
+        config.put(org.springframework.kafka.support.serializer.JsonDeserializer.TRUSTED_PACKAGES,
+                "antoniogiovanni.marchese.dto.events");
+
+        config.put(org.springframework.kafka.support.serializer.JsonDeserializer.USE_TYPE_INFO_HEADERS, false);
+
         return new DefaultKafkaConsumerFactory<>(config);
     }
 
@@ -72,6 +97,18 @@ public class KafkaConfig {
                 = new ConcurrentKafkaListenerContainerFactory<>();
 
         factory.setConsumerFactory(consumerFactory());
+        return factory;
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, StudentEvent>
+            studentKafkaListenerContainerFactory() {
+
+        ConcurrentKafkaListenerContainerFactory<String, StudentEvent> factory
+                = new ConcurrentKafkaListenerContainerFactory<>();
+
+        factory.setConsumerFactory(studentConsumerFactory());
+
         return factory;
     }
 }
