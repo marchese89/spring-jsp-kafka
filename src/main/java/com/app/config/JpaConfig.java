@@ -23,19 +23,22 @@ public class JpaConfig {
 
     @Bean
     public DataSource dataSource() {
-        DriverManagerDataSource ds = new DriverManagerDataSource();
-        ds.setDriverClassName("org.postgresql.Driver");
-        ds.setUrl("jdbc:postgresql://localhost:5432/springdb");
-        ds.setUsername("postgres");
-        ds.setPassword("1234");
-        return ds;
+
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+
+        dataSource.setDriverClassName("oracle.jdbc.OracleDriver");
+        dataSource.setUrl("jdbc:oracle:thin:@localhost:1521/XEPDB1");
+        dataSource.setUsername("springdb");
+        dataSource.setPassword("springdb");
+
+        return dataSource;
     }
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 
-        LocalContainerEntityManagerFactoryBean emf =
-                new LocalContainerEntityManagerFactoryBean();
+        LocalContainerEntityManagerFactoryBean emf
+                = new LocalContainerEntityManagerFactoryBean();
 
         emf.setDataSource(dataSource());
         emf.setPackagesToScan("com.app.model");
@@ -45,7 +48,7 @@ public class JpaConfig {
 
         Properties props = new Properties();
         props.put("hibernate.hbm2ddl.auto", "update");
-        props.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+        props.put("hibernate.dialect", "org.hibernate.dialect.Oracle12cDialect");
         props.put("hibernate.show_sql", "true");
 
         emf.setJpaProperties(props);
