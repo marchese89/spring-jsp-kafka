@@ -16,7 +16,7 @@ public class KafkaConsumerService {
         System.out.println("Ricevuto: " + messaggio);
     }
     @KafkaListener(
-        topics = "student-topic",
+        topics = "student-events",
         groupId = "my-group",
         containerFactory = "studentKafkaListenerContainerFactory"
     )

@@ -14,10 +14,13 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
 @Configuration
 @EnableKafka
+@ComponentScan("com.app.service")
 public class KafkaConfig {
 
     // 🔹 PRODUCER
@@ -72,23 +75,21 @@ public class KafkaConfig {
     @Bean
     public ConsumerFactory<String, StudentEvent> studentConsumerFactory() {
 
+        JsonDeserializer<StudentEvent> deserializer
+                = new JsonDeserializer<>(StudentEvent.class);
+
+        deserializer.addTrustedPackages("antoniogiovanni.marchese.dto.events");
+
         Map<String, Object> config = new HashMap<>();
 
         config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         config.put(ConsumerConfig.GROUP_ID_CONFIG, "my-group");
 
-        config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
-                StringDeserializer.class);
-
-        config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
-                org.springframework.kafka.support.serializer.JsonDeserializer.class);
-
-        config.put(org.springframework.kafka.support.serializer.JsonDeserializer.TRUSTED_PACKAGES,
-                "antoniogiovanni.marchese.dto.events");
-
-        config.put(org.springframework.kafka.support.serializer.JsonDeserializer.USE_TYPE_INFO_HEADERS, false);
-
-        return new DefaultKafkaConsumerFactory<>(config);
+        return new DefaultKafkaConsumerFactory<>(
+                config,
+                new StringDeserializer(),
+                deserializer
+        );
     }
 
     @Bean
