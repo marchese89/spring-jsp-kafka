@@ -12,7 +12,7 @@
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>com.app.config.JpaConfig,com.app.config.KafkaConfig</param-value>
+        <param-value>com.app.config.JpaConfig,com.app.config.KafkaConfig,com.app.config.RootConfig</param-value>
     </context-param>
 
     <listener>

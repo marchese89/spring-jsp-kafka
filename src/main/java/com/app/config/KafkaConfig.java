@@ -14,13 +14,11 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
 import java.util.HashMap;
 import java.util.Map;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
 @Configuration
 @EnableKafka
-@ComponentScan("com.app.service")
 public class KafkaConfig {
 
     // 🔹 PRODUCER
