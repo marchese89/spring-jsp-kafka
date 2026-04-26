@@ -22,16 +22,6 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 public class KafkaConfig {
 
     // 🔹 PRODUCER
-    @Bean
-    public ProducerFactory<String, String> stringProducerFactory() {
-        Map<String, Object> config = new HashMap<>();
-
-        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-        config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-
-        return new DefaultKafkaProducerFactory<>(config);
-    }
 
     @Bean
     public ProducerFactory<String, StudentEvent> studentProducerFactory() {
@@ -44,31 +34,12 @@ public class KafkaConfig {
         return new DefaultKafkaProducerFactory<>(config);
     }
 
-    @Bean(name = "stringKafkaTemplate")
-    public KafkaTemplate<String, String> kafkaTemplate() {
-        return new KafkaTemplate<>(stringProducerFactory());
-    }
-
     @Bean(name = "studentKafkaTemplate")
     public KafkaTemplate<String, StudentEvent> studentKafkaTemplate() {
         return new KafkaTemplate<>(studentProducerFactory());
     }
 
     // 🔹 CONSUMER
-    @Bean
-    public ConsumerFactory<String, String> consumerFactory() {
-        Map<String, Object> config = new HashMap<>();
-
-        config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-        config.put(ConsumerConfig.GROUP_ID_CONFIG, "my-group");
-        config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-
-        config.put(org.springframework.kafka.support.serializer.JsonDeserializer.TRUSTED_PACKAGES,
-                "antoniogiovanni.marchese.dto.events");
-
-        return new DefaultKafkaConsumerFactory<>(config);
-    }
 
     @Bean
     public ConsumerFactory<String, StudentEvent> studentConsumerFactory() {
@@ -88,15 +59,6 @@ public class KafkaConfig {
                 new StringDeserializer(),
                 deserializer
         );
-    }
-
-    @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, String> factory
-                = new ConcurrentKafkaListenerContainerFactory<>();
-
-        factory.setConsumerFactory(consumerFactory());
-        return factory;
     }
 
     @Bean

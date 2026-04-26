@@ -1,17 +1,17 @@
-package com.app.service;
+package com.app.service.integration.kafka;
 
 import antoniogiovanni.marchese.dto.events.StudentEvent;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
-public class KafkaStudentProducer {
+public class KafkaStudentProducerService {
 
     private final KafkaTemplate<String, StudentEvent> studentKafkaTemplate;
 
     private static final String TOPIC = "student-events";
 
-    public KafkaStudentProducer(KafkaTemplate<String, StudentEvent> studentKafkaTemplate) {
+    public KafkaStudentProducerService(KafkaTemplate<String, StudentEvent> studentKafkaTemplate) {
         this.studentKafkaTemplate = studentKafkaTemplate;
     }
 

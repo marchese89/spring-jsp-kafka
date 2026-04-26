@@ -1,7 +1,7 @@
 package com.app.controller;
 
 import com.app.model.Student;
-import com.app.service.KafkaStudentProducer;
+import com.app.service.integration.kafka.KafkaStudentProducerService;
 import com.app.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +16,7 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
     @Autowired
-    private KafkaStudentProducer producer;
+    private KafkaStudentProducerService producer;
 
     @GetMapping("/students")
     public String list(Model model) {

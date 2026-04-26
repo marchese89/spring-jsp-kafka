@@ -1,20 +1,12 @@
-package com.app.service;
+package com.app.service.integration.kafka;
 
 import antoniogiovanni.marchese.dto.events.StudentEvent;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 @Service
-public class KafkaConsumerService {
+public class KafkaStudentConsumerService {
 
-    @KafkaListener(
-            topics = "test-topic",
-            groupId = "my-group",
-            containerFactory = "kafkaListenerContainerFactory"
-    )
-    public void consuma(String messaggio) {
-        System.out.println("Ricevuto: " + messaggio);
-    }
     @KafkaListener(
         topics = "student-events",
         groupId = "my-group",

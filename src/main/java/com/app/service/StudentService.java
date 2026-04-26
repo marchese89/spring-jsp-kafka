@@ -21,7 +21,6 @@ public class StudentService {
     }
     @Transactional
     public Student add(Student s) {
-        repo.save(s);
-        return s;
+        return repo.save(s);
     }
 }
