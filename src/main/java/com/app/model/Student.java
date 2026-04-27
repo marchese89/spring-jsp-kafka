@@ -7,12 +7,21 @@ import javax.persistence.*;
 public class Student {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(
+            name = "student_seq",
+            sequenceName = "student_seq",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "student_seq"
+    )
     private Long id;
 
     private String name;
 
-    public Student() {}
+    public Student() {
+    }
 
     public Student(String name) {
         this.name = name;
