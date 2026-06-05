@@ -3,7 +3,6 @@ package com.app.controller;
 import com.app.model.Student;
 import com.app.service.integration.kafka.KafkaStudentProducerService;
 import com.app.service.StudentService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,10 +12,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class StudentController {
 
-    @Autowired
-    private StudentService studentService;
-    @Autowired
-    private KafkaStudentProducerService producer;
+    private final StudentService studentService;
+    private final KafkaStudentProducerService producer;
+
+    public StudentController(StudentService studentService, KafkaStudentProducerService producer) {
+        this.studentService = studentService;
+        this.producer = producer;
+    }
 
     @GetMapping("/students")
     public String list(Model model) {
